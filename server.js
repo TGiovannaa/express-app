@@ -21,8 +21,13 @@ app.get('/user', (req, res) => {
 app.get('/email', (req, res) => {
     res.send('Unesite vas email');
 });
+app.get('/report', (req, res) => {
+    res.send('Getting report list');
+});
+
+
   
 
 app.listen(3000, () => {
-    console.log('Example app is listening on port 3000.') 
+    console.log('Express server is running on port 3000.') 
 });
