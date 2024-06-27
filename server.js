@@ -25,7 +25,7 @@ app.patch('/user', (req, res) => {
     res.send('Update user');
 });
 app.delete('/user', (req, res) => {
-    res.send('Delete user');
+    res.send('Delete user!');
 });
 
 
