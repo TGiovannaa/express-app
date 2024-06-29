@@ -1,6 +1,17 @@
 const express = require('express');
 
-
+const users = [
+    {
+        id: 1,
+        name:'John Doe',
+        email: 'john.doe@example.com'
+    },
+    {
+        id: 2,
+        name:'Jane Smith',
+        email: 'jane.smith@example.com'
+    }
+];
 
 
 const app = express()
@@ -26,6 +37,21 @@ app.patch('/user', (req, res) => {
 });
 app.delete('/user', (req, res) => {
     res.send('Delete user!');
+});
+
+app.get('/users', (req, res) => {
+    res.send(users);
+});
+
+app.get('/user/:id', (req, res) => {
+    const userId = parseInt(req.params.id, 10);
+    const user = users.find(user => user.id === userId);
+
+    if (user) {
+        res.send(user);
+    } else {
+        res.status(404).send('User not found');
+    }
 });
 
 
