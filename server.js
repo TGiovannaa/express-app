@@ -1,4 +1,6 @@
 const express = require('express');
+const bodyParser = require('body-parser');
+const { log } = require('console');
 
 const users = [
     {
@@ -16,8 +18,11 @@ const users = [
 
 const app = express()
 
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
+
 app.get('/', function (req, res) {
-   return res.send('Hello Jovana');
+   return res.send('Hello');
 })
 
 
@@ -29,15 +34,7 @@ app.get('/user', (req, res) => {
     res.send('Add user');
 });
 
-app.post('/user', (req, res) => {
-    res.send('Create user');
-});
-app.patch('/user', (req, res) => {
-    res.send('Update user');
-});
-app.delete('/user', (req, res) => {
-    res.send('Delete user!');
-});
+
 
 app.get('/users', (req, res) => {
     res.send(users);
@@ -54,6 +51,42 @@ app.get('/user/:id', (req, res) => {
     }
 });
 
+app.post('/user', (req, res) => {
+    const newUser = {
+        id: users.length + 1, 
+        name: req.body.name
+       
+    };
+
+    
+
+    users.push(newUser);
+    
+    res.status(200).send(newUser);
+});
+
+app.patch('/user/:id', (req, res) => {
+    const userId = parseInt(req.params.id, 10);
+    const user = users.find(user => user.id === userId);
+
+    if (user) {
+        user.name = req.body.name || user.name;
+        res.send(user);
+    } else {
+        res.status(404).send('User not found');
+    }
+});
+
+app.delete('/users/:id', (req, res) => {
+    const userId = parseInt(req.params.id, 10);
+    const userIndex = users.findIndex(user => user.id === userId);
+    if (userIndex !== -1) {
+        users.splice(userIndex, 1);
+        res.status(200).send('User deleted'); 
+    } else {
+        res.status(404).send('User not found');
+    }
+});
 
 
   
