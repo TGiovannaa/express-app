@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const { body, param, validationResult } = require('express-validator');
 const { log } = require('console');
 
 const users = [
@@ -15,6 +16,13 @@ const users = [
     }
 ];
 
+const validate = (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+};
 
 const app = express()
 
@@ -51,7 +59,11 @@ app.get('/user/:id', (req, res) => {
     }
 });
 
-app.post('/user', (req, res) => {
+app.post('/user',
+body('name').notEmpty().withMessage('Name is required').isString().withMessage('Name must be a string'),
+body('email').notEmpty().withMessage('Email is required').isEmail().withMessage('Email must be valid'),
+validate, 
+(req, res) => {
     const newUser = {
         id: users.length + 1, 
         name: req.body.name,
@@ -65,7 +77,12 @@ app.post('/user', (req, res) => {
     res.status(200).send(newUser);
 });
 
-app.patch('/user/:id/email', (req, res) => {
+app.patch('/user/:id/email',
+    param('id').isInt().withMessage('ID must be an integer'),
+    body('name').notEmpty().withMessage('Name is required').isString().withMessage('Name must be a string'),
+    body('email').notEmpty().withMessage('Email is required').isEmail().withMessage('Email must be valid'),
+    validate,
+     (req, res) => {
     const userId = parseInt(req.params.id, 10);
     const user = users.find(user => user.id === userId);
 
