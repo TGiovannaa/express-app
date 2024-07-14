@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "express.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./server.js",
+    "dev": "nodemon ./server.js"
   },
   "keywords": [],
   "author": "",
@@ -11,7 +13,14 @@
   "description": "",
   "dependencies": {
     "body-parser": "^1.20.2",
+<<<<<<< HEAD
     "express": "^4.19.2",
     "express-validator": "^7.1.0"
+=======
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+>>>>>>> 7e8204a (added nodemon package)
   }
 }
